@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from authentication.models import User
 
 
 
@@ -14,6 +14,10 @@ class Technology(models.Model):
  
     def __str__(self):
         return self.name
+    class Meta:
+
+        verbose_name =('Technology')
+        verbose_name_plural = ('Technologies')
     
 
 class Startup(models.Model):

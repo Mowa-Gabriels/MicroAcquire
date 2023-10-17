@@ -8,6 +8,9 @@ from .managers import UserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+
+
 
 
 
@@ -46,14 +49,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         except:
             url = ''
         return url
-    # def tokens(self):
-    #     refresh = RefreshToken.for_user(self)
-    #     access = AccessToken.for_user(self)
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        access = AccessToken.for_user(self)
          
-    #     return{
-    #         'refresh': str(refresh),
-    #         'access': str(access)
-    #     }
+        return{
+            'refresh': str(refresh),
+            'access': str(access)
+        }
 
   
 

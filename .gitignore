@@ -1,0 +1,5 @@
+# created by virtualenv automatically
+*.sqlite3
+acquire_venv
+venv
+.env

@@ -1,5 +1,8 @@
 from django.contrib import admin
-from authentication.models import *
+from .models import User
 
-# Register your models here.
-admin.site.register(Profile)
+
+class UserAdmin(admin.ModelAdmin):
+     list_display = ("email", "is_active", "is_buyer", "is_staff", "is_verified", "password")
+
+admin.site.register(User, UserAdmin)

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -186,17 +187,13 @@ SIMPLE_JWT = {
 }
 
 SWAGGER_SETTINGS ={
-
-    'SECURITY_DEFINITIONS': {
-        "Bearer": {
-                "type": "apiKey",
-                "name": "Authorisation",
-                "in": "header"
-  }
-    },
-    
-    'VALIDATOR_URL': 'http://localhost:8000',
-    
+'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

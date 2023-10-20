@@ -3,9 +3,10 @@ from django.urls import path
 from .views import (BuyerRegisterView, SellerRegisterView,
                     BuyerVerifyEmailView,
                     SellerVerifyEmailView, 
-                    LoginAPIView, PasswordTokenCheckAPIView,
-                      RequestPasswordReset, SetNewPasswordAPIView, UserListView)
+                    LoginAPIView, LogoutAPIView, PasswordTokenCheckAPIView,
+                      RequestPasswordReset, SetNewPasswordAPIView, UserListView, LogoutAPIView)
 from rest_framework_simplejwt.views import TokenRefreshView
+# from rest_framework_simplejwt.views import TokenBlacklistView
 from authentication import views
 
 
@@ -26,9 +27,11 @@ urlpatterns = [
    path('verify-email/seller', SellerVerifyEmailView.as_view(), name='verify-email-seller'), 
 
    path('login/', LoginAPIView.as_view(), name='login'),  
+   path('logout/', LogoutAPIView.as_view(), name='logout'),  
 
 
    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+#    path('api/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
    
    path('api/request-rest-email/', RequestPasswordReset.as_view(),
          name='request-rest-email'),

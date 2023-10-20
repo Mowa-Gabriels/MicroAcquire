@@ -6,6 +6,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 
 from rest_framework import status
@@ -202,3 +203,25 @@ class SetNewPasswordSerializer(serializers.Serializer):
             raise AuthenticationFailed({'error': "Token is not valid. request a new one"}, 401)
 
         return super().validate(attrs)
+
+
+
+        
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+    default_error_messages = {
+        'bad token': ('Tokin is expired or invalid')
+    }
+    
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+      
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail('Bad Token')
+    
+      

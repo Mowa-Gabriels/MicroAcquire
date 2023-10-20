@@ -22,7 +22,6 @@ class Technology(models.Model):
 
 class Startup(models.Model):
 
-
     Industry_options = [
         ('saas', 'SAAS'),
         ('edtech', 'EdTech'),

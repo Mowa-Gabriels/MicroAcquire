@@ -22,7 +22,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Multi UserType  Auth API",
+      title="Acquire Auth API",
       default_version='v2',
       description="Test Authentication",
       terms_of_service="https://www.google.com/policies/terms/",
@@ -37,8 +37,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
-   
-    # path('marketplace/', include('marketplace.urls'))
+    path('marketplace/', include('marketplace.urls')),
 
     
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

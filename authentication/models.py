@@ -21,8 +21,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField('last name', max_length=30, blank=True)
     is_active = models.BooleanField('active', default=True)
     is_staff = models.BooleanField('staff', default=True)
-    is_seller = models.BooleanField('teacher', default=False)
-    is_buyer = models.BooleanField('student', default=False)
+    is_seller = models.BooleanField('seller', default=False)
+    is_buyer = models.BooleanField('buyer', default=False)
     is_verified    = models.BooleanField('verified', default=False)
     
 
@@ -51,11 +51,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         return url
     def tokens(self):
         refresh = RefreshToken.for_user(self)
-        access = AccessToken.for_user(self)
          
         return{
             'refresh': str(refresh),
-            'access': str(access)
+            'access': str(refresh.access_token)
         }
 
   

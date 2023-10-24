@@ -1,5 +1,6 @@
 from django.db import models
 from authentication.models import User
+from django_countries.fields import CountryField
 
 
 
@@ -20,9 +21,8 @@ class Technology(models.Model):
         verbose_name_plural = ('Technologies')
     
 
-class Startup(models.Model):
 
-    Industry_options = [
+Industry_options = [
         ('saas', 'SAAS'),
         ('edtech', 'EdTech'),
         ('proptech', 'PropTech'),
@@ -31,22 +31,23 @@ class Startup(models.Model):
         
     ]
 
-    Sale_options = [
+Sale_options = [
         ('full', 'Full'),
         ('partial', 'Partial')
         
     ]
+
+class Startup(models.Model):
     # Basic Company Information
 
       # Team Details
     founders = models.ForeignKey(User, on_delete=models.Case)
     
-    company_name = models.CharField(max_length=255)
+    company_name = models.CharField(max_length=255, unique=True)
     founding_date = models.DateField()
-    location = models.CharField(max_length=255)
+    country = CountryField(default='Nigeria')
     industry = models.CharField(max_length=255, choices=Industry_options)
     tag = models.ManyToManyField(to=Tag, max_length=50)
-
     # Financial Information
     revenue = models.DecimalField(max_digits=12, decimal_places=2)
     profit = models.DecimalField(max_digits=12, decimal_places=2)

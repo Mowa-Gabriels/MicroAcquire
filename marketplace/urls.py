@@ -12,6 +12,7 @@ router.register(r'technologies', TechnologyViewSet)
 
 urlpatterns = [
      path('', include(router.urls)),
+    
 
     # path('', StartupListView.as_view(), name='startup-list'),
     # path('create/', StartupCreateView.as_view(), name='startup-create'),

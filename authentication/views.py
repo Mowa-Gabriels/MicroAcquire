@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics, status, views
 from .serializers import (BuyerRegisterSerializer, SellerRegisterSerializer, VerifyEmailSerializer,
-                           LoginSerializer, LogoutSerializer,
+                           UserLoginSerializer, LogoutSerializer,
                            RequestPasswordResetSerializer, SetNewPasswordSerializer, UserSerializer)
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -27,6 +27,11 @@ from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
 @api_view(['GET'])
 def apiOverview(request , format=None):
 
@@ -36,6 +41,14 @@ def apiOverview(request , format=None):
         # 'list': reverse('user-list', request=request, format=format),
         # 'income': reverse('income-list', request=request, format=format)
     })
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = "http://localhost:8000/"
+    client_class = OAuth2Client
+
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
 
 
 class UserListView(generics.ListAPIView):
@@ -142,7 +155,7 @@ class SellerVerifyEmailView(views.APIView):
             return Response({'email': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST) 
         
 class LoginAPIView(generics.GenericAPIView):
-    serializer_class = LoginSerializer
+    serializer_class = UserLoginSerializer
     
     def post(self, request):
 

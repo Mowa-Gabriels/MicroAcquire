@@ -87,7 +87,7 @@ class VerifyEmailSerializer(ModelSerializer):
         ]
 
 
-class LoginSerializer(ModelSerializer):
+class UserLoginSerializer(ModelSerializer):
     email = serializers.EmailField(min_length=6, max_length=70)
     password = serializers.CharField(
         min_length=6, max_length=70, write_only=True)

@@ -11,6 +11,7 @@ from marketplace.utils import IsOwnerOrReadOnly
 
 
 
+
 # class StartupListView(generics.ListAPIView):
 #     queryset = Startup.objects.all()
 #     serializer_class = StartupSerializer
@@ -66,7 +67,7 @@ from marketplace.utils import IsOwnerOrReadOnly
 class StartupViewSet(viewsets.ModelViewSet):
     queryset = Startup.objects.all()
     serializer_class = StartupSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]
     lookup_field = 'pk'
 
     def get_serializer_class(self):

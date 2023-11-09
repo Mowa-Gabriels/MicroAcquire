@@ -14,10 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+# from allauth.socialaccount.views import signup
+from authentication.views import GoogleLogin, FacebookLogin
+
 
 
 schema_view = get_schema_view(
@@ -38,9 +41,19 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
     path('marketplace/', include('marketplace.urls')),
+    path('token-pass/', include('drfpasswordless.urls')),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    # path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    
 
+
+    
     
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    path("auth/google/", GoogleLogin.as_view(), name="google_login"),
+    path('auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
+   
    
 ]

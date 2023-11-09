@@ -16,6 +16,7 @@ from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
 class User(AbstractBaseUser, PermissionsMixin):
 
+   
     email = models.EmailField('email address', unique=True)
     first_name = models.CharField('first name', max_length=30)
     last_name = models.CharField('last name', max_length=30, blank=True)
@@ -24,7 +25,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_seller = models.BooleanField('seller', default=False)
     is_buyer = models.BooleanField('buyer', default=False)
     is_verified    = models.BooleanField('verified', default=False)
-    
+    username = None    
 
 
 
@@ -69,7 +70,7 @@ class Profile(models.Model):
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     def __str__(self):
-        return f'{self.user.username} profile'
+        return f'{self.user.email} -profile'
     
     @property
     def avatarUrl(self):

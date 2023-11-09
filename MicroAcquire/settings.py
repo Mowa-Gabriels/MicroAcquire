@@ -47,14 +47,49 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
     'marketplace',
     'authentication',
+
     'rest_framework',
     'drf_yasg',
     'corsheaders',
     'django_countries',
+
+     'rest_framework.authtoken',
+     'drfpasswordless',
     'rest_framework_simplejwt.token_blacklist',
+
+     'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
+
+
+
+
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
+
+    
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook",
+
+
 ]
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False    # This removes the username field
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+SITE_ID = 1 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -64,6 +99,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'MicroAcquire.urls'
@@ -79,10 +115,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                 'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'MicroAcquire.wsgi.application'
 
@@ -170,6 +210,9 @@ REST_FRAMEWORK ={
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+         'oauth2_provider.contrib.rest_framework.OAuth2Authentication', 
+        'drf_social_oauth2.authentication.SocialAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     ),
     
      'DEFAULT_RENDERER_CLASSES': [
@@ -179,6 +222,31 @@ REST_FRAMEWORK ={
 
 
     
+}
+
+
+AUTHENTICATION_BACKENDS = [
+
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+  
+]
+
+
+
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'GOOGLE-API-KEY' 
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'GOOGLE-API-SECRET'
+
+
+
+PASSWORDLESS_AUTH = {
+   
+   'PASSWORDLESS_AUTH_TYPES': ['EMAIL'],
+
+   
 }
 
 SIMPLE_JWT = {

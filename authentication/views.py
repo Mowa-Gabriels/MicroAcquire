@@ -51,11 +51,6 @@ class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
 
 
-class UserListView(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-  
-
 
 class BuyerRegisterView(generics.GenericAPIView):
 
@@ -233,4 +228,11 @@ class SetNewPasswordAPIView(generics.GenericAPIView):
         user= request.data
         serializer = self.serializer_class(data =user)
         serializer.is_valid(raise_exception=True)
-        return Response({'success': True, 'message': 'Password Rest Success'}, status=status.HTTP_200_OK)
+        return Response({'success': True, 'message': 'Password Reset Successful'}, status=status.HTTP_200_OK)
+
+
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+  

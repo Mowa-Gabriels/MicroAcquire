@@ -20,6 +20,8 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 # from allauth.socialaccount.views import signup
 from authentication.views import GoogleLogin, FacebookLogin
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -56,4 +58,5 @@ urlpatterns = [
     path('auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
    
    
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

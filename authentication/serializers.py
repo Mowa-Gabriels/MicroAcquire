@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import User
+from .models import User, Profile
 from django.contrib.auth import authenticate, login
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -12,13 +12,21 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework import status
 
 
+class ProfileSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Profile
+        fields =  ['linkedin_profile', 'twitter_profile' , 
+                   'facebook_profile', 'phone_no' , 'avatar',
+                   ]
 
 class UserSerializer(serializers.ModelSerializer):
+    profile= ProfileSerializer(read_only=True)
 
     class Meta:
         model = User
-        fields =  ['id', 'first_name', 'last_name', 'email', 'password', 'is_buyer', 'is_seller']
+        fields =  ['id', 'first_name', 'last_name', 
+                   'email', 'password', 'is_buyer', 'is_seller', 'profile']
 
 
 

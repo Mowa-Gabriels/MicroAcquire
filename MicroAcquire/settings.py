@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
+import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -66,19 +70,16 @@ INSTALLED_APPS = [
     'drf_social_oauth2',
 
 
-
-
     "dj_rest_auth",
-    "dj_rest_auth.registration",
-
-    
-
+    # "dj_rest_auth.registration",
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.facebook",
 
+    'cloudinary_storage',
+    'cloudinary',
 
 ]
 
@@ -271,5 +272,24 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+MEDIA_URL = '/images/'
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUD_NAME = config('CLOUD_NAME')
+API_KEY = config('API_KEY')
+API_SECRET = config('API_SECRET')
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': CLOUD_NAME,
+    'API_KEY': API_KEY,
+    'API_SECRET': API_SECRET
+}
+
+
 
 

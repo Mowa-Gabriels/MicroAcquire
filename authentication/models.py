@@ -14,6 +14,8 @@ from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
 
 
+
+
 class User(AbstractBaseUser, PermissionsMixin):
 
    
@@ -43,13 +45,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
     
 
-    @property
-    def avatarUrl(self):
-        try:
-            url = self.avatar.url
-        except:
-            url = ''
-        return url
     def tokens(self):
         refresh = RefreshToken.for_user(self)
          

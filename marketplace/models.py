@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import User
 from django_countries.fields import CountryField
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 
 
@@ -84,7 +85,7 @@ class Startup(models.Model):
     custom_tools = models.TextField()
 
     # Legal and Compliance
-    legal_documents = models.FileField(upload_to='legal/')
+    legal_documents = models.FileField(upload_to='legal_doc/', storage=RawMediaCloudinaryStorage())
     legal_issues = models.BooleanField(default=False)
     funds_raised = models.BooleanField(default=False)
 
@@ -113,7 +114,7 @@ class Startup(models.Model):
     exit_timeline = models.DateField()
 
     # Due Diligence Documents
-    due_diligence_documents = models.FileField(upload_to='due_diligence/')
+    due_diligence_documents = models.FileField(upload_to='due_diligence_doc/', storage=RawMediaCloudinaryStorage())
 
     # NDAs
     require_ndas = models.BooleanField()

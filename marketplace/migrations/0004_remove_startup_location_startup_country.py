@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='startup',
             name='country',
-            field=django_countries.fields.CountryField(default='Nigeria', max_length=2),
+            field=django_countries.fields.CountryField(default='Nigeria', max_length=225),
         ),
     ]

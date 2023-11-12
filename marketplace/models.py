@@ -46,7 +46,7 @@ class Startup(models.Model):
     
     company_name = models.CharField(max_length=255, unique=True)
     founding_date = models.DateField()
-    country = CountryField(default='Nigeria')
+    country = CountryField(default='Nigeria',max_length=255)
     industry = models.CharField(max_length=255, choices=Industry_options)
     tag = models.ManyToManyField(to=Tag, max_length=50)
     # Financial Information

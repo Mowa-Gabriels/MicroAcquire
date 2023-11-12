@@ -47,15 +47,14 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     # path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     
-
-
-    
     
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     path("auth/google/", GoogleLogin.as_view(), name="google_login"),
     path('auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
+
+    path('admin_tools_stats/', include('admin_tools_stats.urls'))
    
    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

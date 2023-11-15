@@ -79,7 +79,6 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     # "dj_rest_auth.registration",
     'allauth',
-    'allauth.account',
     'allauth.socialaccount',
     "allauth.socialaccount.providers.google",
     "allauth.socialaccount.providers.facebook",
@@ -88,7 +87,8 @@ INSTALLED_APPS = [
     'cloudinary',
 
     'django_seed', #Django-seed uses the faker library to generate test data for your Django models
-  
+
+    'django_filters',
 
 
 
@@ -145,28 +145,28 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-PASSWORD = config('PASSWORD')
-HOST = config('HOST')
-PORT = config('PORT')
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'railway', 
-        'USER': 'postgres',
-        'PASSWORD': PASSWORD,
-        'HOST': HOST, 
-        'PORT': PORT,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# PASSWORD = config('PASSWORD')
+# HOST = config('HOST')
+# PORT = config('PORT')
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'railway', 
+#         'USER': 'postgres',
+#         'PASSWORD': PASSWORD,
+#         'HOST': HOST, 
+#         'PORT': PORT,
+#     }
+# }
 
 
 # Password validation
@@ -246,7 +246,9 @@ REST_FRAMEWORK ={
      'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
+    ],
+
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 
 
     

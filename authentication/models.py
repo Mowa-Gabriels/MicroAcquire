@@ -9,7 +9,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
-
+import random
+from django.utils.text import slugify
 
 
 
@@ -22,6 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('email address', unique=True)
     first_name = models.CharField('first name', max_length=30)
     last_name = models.CharField('last name', max_length=30, blank=True)
+    slug = models.SlugField(unique=True,null=True,blank=True)
     is_active = models.BooleanField('active', default=True)
     is_staff = models.BooleanField('staff', default=True)
     is_seller = models.BooleanField('seller', default=False)
@@ -35,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name']
+    
 
     class Meta:
         verbose_name = ('username')
@@ -52,8 +54,17 @@ class User(AbstractBaseUser, PermissionsMixin):
             'refresh': str(refresh),
             'access': str(refresh.access_token)
         }
+    
+    def save(self, *args, **kwargs):
+        # Combine last name and random 6 numbers
+        random_numbers = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        combined_slug = f"{slugify(self.first_name)}-{random_numbers}"
 
-  
+        # Assign the generated slug to the slug field
+        self.slug = combined_slug
+
+        super().save(*args, **kwargs)
+
 
 class Profile(models.Model):
 

@@ -2,6 +2,8 @@ from django.db import models
 from authentication.models import User
 from django_countries.fields import CountryField
 from cloudinary_storage.storage import RawMediaCloudinaryStorage
+import random
+from django.utils.text import slugify
 
 
 
@@ -49,6 +51,7 @@ class Startup(models.Model):
     country = CountryField(default='Nigeria',max_length=255)
     industry = models.CharField(max_length=255, choices=Industry_options)
     tag = models.ManyToManyField(to=Tag, max_length=50)
+    slug = models.SlugField(unique=True, blank=True,null=True)
     # Financial Information
     revenue = models.DecimalField(max_digits=12, decimal_places=2)
     profit = models.DecimalField(max_digits=12, decimal_places=2)
@@ -124,3 +127,13 @@ class Startup(models.Model):
 
     def __str__(self):
         return self.company_name
+    
+    def save(self, *args, **kwargs):
+        # Combine last name and random 6 numbers
+        random_numbers = ''.join([str(random.randint(0, 9)) for _ in range(2)])
+        combined_slug = f"{slugify(self.description)}-{random_numbers}"
+
+        # Assign the generated slug to the slug field
+        self.slug = combined_slug
+
+        super().save(*args, **kwargs)

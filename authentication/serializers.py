@@ -14,19 +14,26 @@ from rest_framework import status
 
 class ProfileSerializer(serializers.ModelSerializer):
 
+
     class Meta:
         model = Profile
         fields =  ['linkedin_profile', 'twitter_profile' , 
                    'facebook_profile', 'phone_no' , 'avatar',
                    ]
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     profile= ProfileSerializer(read_only=True)
+    
 
     class Meta:
         model = User
-        fields =  ['id', 'first_name', 'last_name', 
-                   'email', 'password', 'is_buyer', 'is_seller', 'profile']
+        fields =  ['url','first_name', 'last_name', 
+                   'email', 'is_buyer', 'is_seller', 'profile' ,'slug',]
+        extra_kwargs = {
+        'url' : {'view_name': 'user-detail', 'lookup_field':'slug'},
+
+
+    }
 
 
 
@@ -218,9 +225,8 @@ class SetNewPasswordSerializer(serializers.Serializer):
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
     default_error_messages = {
-        'bad token': ('Tokin is expired or invalid')
+        'Bad Token': ('Token is expired or invalid')
     }
-    
 
     def validate(self, attrs):
         self.token = attrs['refresh']

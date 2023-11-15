@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from rest_framework import generics, status, views
+from rest_framework import generics, status, views, viewsets
 from .serializers import (BuyerRegisterSerializer, SellerRegisterSerializer, VerifyEmailSerializer,
                            UserLoginSerializer, LogoutSerializer,
-                           RequestPasswordResetSerializer, SetNewPasswordSerializer, UserSerializer)
+                           RequestPasswordResetSerializer, SetNewPasswordSerializer, UserSerializer,ProfileSerializer)
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User
+from .models import User,Profile
 from .utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
@@ -16,11 +16,13 @@ from drf_yasg import openapi
 from .renderers import UserRenderers
 
 
+
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser,IsAuthenticated
+from rest_framework.decorators import action
 from .models import User
 
 from rest_framework.reverse import reverse
@@ -31,6 +33,8 @@ from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+
+from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 
 @api_view(['GET'])
 def apiOverview(request , format=None):
@@ -164,6 +168,7 @@ class LoginAPIView(generics.GenericAPIView):
 
 class LogoutAPIView(generics.GenericAPIView):
     serializer_class = LogoutSerializer
+    permission_classes=[IsAuthenticated]
     
     def post(self, request):
 
@@ -172,7 +177,7 @@ class LogoutAPIView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()   
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 class RequestPasswordReset(generics.GenericAPIView):
 
@@ -231,8 +236,28 @@ class SetNewPasswordAPIView(generics.GenericAPIView):
         return Response({'success': True, 'message': 'Password Reset Successful'}, status=status.HTTP_200_OK)
 
 
+class UserViewSet(viewsets.ModelViewSet):
 
-class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    lookup_field = "slug"
+    parser_classes = (FormParser, MultiPartParser, JSONParser)
+
+    @action(detail=True, methods=['get'])
+    def profile_detail(self, request, slug=None):
+        user = self.get_object()
+        profile = user.profile
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+   
+
+       
+
+# class ProfileDetailView(generics.RetrieveUpdateAPIView):
+#     queryset = Profile.objects.all()
+#     serializer_class = ProfileSerializer
+#     # lookup_field = "slug"
+
+  
   

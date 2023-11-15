@@ -41,18 +41,18 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('authentication.urls')),
-    path('marketplace/', include('marketplace.urls')),
+    path('auth/v1/', include('authentication.urls')),
+    path('marketplace/v1/', include('marketplace.urls')),
     path('token-pass/', include('drfpasswordless.urls')),
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/v1/', include('dj_rest_auth.urls')),
     # path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     
     
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path("auth/google/", GoogleLogin.as_view(), name="google_login"),
-    path('auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
+    path("auth/v1/google/", GoogleLogin.as_view(), name="google_login"),
+    # path('auth/v1/facebook/', FacebookLogin.as_view(), name='fb_login'),
 
     path('admin_tools_stats/', include('admin_tools_stats.urls'))
    

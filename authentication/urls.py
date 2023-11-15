@@ -1,25 +1,33 @@
 
-from django.urls import path
+from django.urls import path, include
 from .views import (BuyerRegisterView, SellerRegisterView,
                     BuyerVerifyEmailView,
                     SellerVerifyEmailView, 
                     LoginAPIView, LogoutAPIView, PasswordTokenCheckAPIView,
-                      RequestPasswordReset, SetNewPasswordAPIView, UserListView, LogoutAPIView)
+                      RequestPasswordReset, SetNewPasswordAPIView, UserViewSet, LogoutAPIView,)
 from rest_framework_simplejwt.views import TokenRefreshView
 # from rest_framework_simplejwt.views import TokenBlacklistView
 from authentication import views
+
+from rest_framework.routers import DefaultRouter
+router = DefaultRouter()
+router.register(r'user', UserViewSet)
 
 
 
 
 urlpatterns = [
     
+    path('', include(router.urls)),
+    
      path('overview/', views.apiOverview, name='api-overview'),
 
    path('register/buyer-account', BuyerRegisterView.as_view(), name='register'),
    path('register/seller-account', SellerRegisterView.as_view(), name='register'),
 
-   path('user-list/', UserListView.as_view(), name='user-list'),
+# #    path('user-list/', UserListView.as_view(), name='user-list'),
+#    path('user/<str:slug>/', UserDetailView.as_view(), name='user-detail'),
+#     path('user/profile/<str:pk>/', ProfileDetailView.as_view(), name='profile-detail'),
     
 
 

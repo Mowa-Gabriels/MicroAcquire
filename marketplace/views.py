@@ -8,6 +8,9 @@ from marketplace.serializers import (StartupSerializer,StartupCreateSerializer,
 )
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from marketplace.utils import IsOwnerOrReadOnly
+from django_filters import rest_framework as filters
+
+from rest_framework import filters
 
 
 
@@ -64,11 +67,28 @@ from marketplace.utils import IsOwnerOrReadOnly
 
 
 
+from django_filters import rest_framework as filters
+class StartupFilter(filters.FilterSet):
+
+    rev_min_price = filters.NumberFilter(field_name="revenue", lookup_expr='gte')
+    rev_max_price = filters.NumberFilter(field_name="revenue", lookup_expr='lte')
+    min_price = filters.NumberFilter(field_name="profit", lookup_expr='gte')
+    max_price = filters.NumberFilter(field_name="profit", lookup_expr='lte')
+
+    class Meta:
+        model = Startup
+        fields = ['company_name', 'industry']
+
+
 class StartupViewSet(viewsets.ModelViewSet):
     queryset = Startup.objects.all()
     serializer_class = StartupSerializer
-    permission_classes = [IsAuthenticated]
-    lookup_field = 'pk'
+    permission_classes = [AllowAny]
+    # search_fields = ['company_name', 'industry', 'country','tag__name', 'technology_used__name']
+    lookup_field = 'slug'
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = StartupFilter
+
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -79,7 +99,12 @@ class StartupViewSet(viewsets.ModelViewSet):
         serializer.save(founders=self.request.user)
 
     # def get_queryset(self):
-    #     return self.queryset.filter(founders=self.request.user.id)
+    #     user = self.request.user
+    #     return self.queryset.filter(founders=user)
+    
+ 
+
+
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
